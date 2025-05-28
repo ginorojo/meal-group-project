@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function AllMeals() {
+function AllMeals({ searchTerm }) {
   const [meals, setMeals] = useState([]); 
   const [loading, setLoading] = useState(true);
 
@@ -24,19 +24,24 @@ function AllMeals() {
     getMeals();
   }, []);
 
-  if (loading) {
-    return <p>Cargando platos...</p>;
-  }
+  if (loading) return <p className="text-center">Cargando platos...</p>;
+
+  const filteredMeals = meals.filter((meal) =>
+    meal.strMeal.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-
-    <div className='md:grid-cols-3  grid grid-cols-1 place-items-center pt-5'>
-      {meals.map((comida) => (
-        <div key={comida.idMeal}>
-          <img className='w-[250px]  rounded-lg ' src={comida.strMealThumb} alt={comida.strMeal} width="200" />
-           <h3 className='pb-5 w-[250px] '>{comida.strMeal}</h3>
-        </div>
-      ))}
+    <div className="md:grid-cols-3 grid grid-cols-1 place-items-center pt-5">
+      {filteredMeals.length > 0 ? (
+        filteredMeals.map((comida) => (
+          <div key={comida.idMeal}>
+            <img className="w-[250px] rounded-lg" src={comida.strMealThumb} alt={comida.strMeal} />
+            <h3 className="pb-5 w-[250px]">{comida.strMeal}</h3>
+          </div>
+        ))
+      ) : (
+        <p className="text-center">No se encontraron platos.</p>
+      )}
     </div>
   );
 }

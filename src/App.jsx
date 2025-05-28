@@ -5,17 +5,18 @@ import Buscador from './components/Buscador';
 
 function App() {
   const [view, setView] = useState('home');
+  const [searchTerm, setSearchTerm] = useState('');
 
   return (
     <div className="bg-[#292829] text-white min-h-screen font-sans">
       <Nav setView={setView} />
-      <Buscador />
+      <Buscador searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <main className="p-6">
         {view === 'home' && (
           <>
             <h1 className="text-3xl font-bold mb-4 text-center">Comidas del Mundo</h1>
-            <AllMeals />
+            <AllMeals searchTerm={searchTerm} />
           </>
         )}
 
