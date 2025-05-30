@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function AllMeals({ searchTerm }) {
+function AllMeals({ searchTerm, categories, letter }) {
+
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function getMeals() {
-      const letras = 'abcdefg';
-      let comidas = [];
+      setLoading(true)
+      let url = '';
 
       try {
         for (let letra of letras) {
@@ -26,10 +27,44 @@ function AllMeals({ searchTerm }) {
       } finally {
         setLoading(false);
       }
-    }
+      if (searchTerm) {
+        url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`;
+      }
+      else if (categories) {
+        url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categories}`;
+      }
+      else if (letter) {
+        url = `https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`;
+      }
+      else {
+        const letras = 'abcdefgh'
+        let comidas = []
 
+        for (let letra of letras) {
+          const respuesta = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${letra}`);
+          const datos = await respuesta.json();
+          if (datos.meals) {
+            comidas = comidas.concat(datos.meals)
+          }
+        }
+        setMeals(comidas);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
+        setMeals(datos.meals || [])
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+        setMeals([])
+      }
+      setLoading(false);
+    }
     getMeals();
-  }, []);
+  }, [searchTerm, categories, letter])
+
 
   const filteredMeals = meals.filter((meal) =>
     meal.strMeal.toLowerCase().includes(searchTerm.toLowerCase())
@@ -40,6 +75,7 @@ function AllMeals({ searchTerm }) {
 
   return (
     <div id='menu' className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4 pt-6 pb-10">
+    <div className="md:grid-cols-3 grid grid-cols-1 place-items-center pt-5">
       {filteredMeals.length > 0 ? (
         filteredMeals.map((comida) => (
           <Link

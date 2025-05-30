@@ -4,6 +4,7 @@ import AllMeals from './components/Allmeals';
 import MealDetail from './components/MealDetail';
 import Nav from './components/Nav';
 import Buscador from './components/Buscador';
+import LetterFilter from './components/LetterFilter';
 
 function Home({ searchTerm, setSearchTerm }) {
   return (

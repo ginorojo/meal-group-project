@@ -1,10 +1,10 @@
 import React from 'react';
+import CatButton from './CatButton';
 
-export default function Buscador({ searchTerm, setSearchTerm }) {
+export default function Buscador({ searchTerm, setSearchTerm, setCategories }) {
   const handleSearch = (e) => {
     e.preventDefault();
     console.log('Buscando:', searchTerm);
-    // Aquí puedes disparar la lógica de búsqueda real si es necesario
   };
 
   return (
@@ -14,6 +14,8 @@ export default function Buscador({ searchTerm, setSearchTerm }) {
       role="search"
     >
       <div className="flex">
+    <form onSubmit={handleSearch} className="relative w-full max-w-md mx-auto mb-6 pt-5">
+      <div className="flex p-4 md:p-0">
         <input
           type="search"
           value={searchTerm}
@@ -29,6 +31,11 @@ export default function Buscador({ searchTerm, setSearchTerm }) {
         >
           Buscar
         </button>
+      </div>
+      <div >
+        <CatButton
+          setCategories1={setCategories}
+        />
       </div>
     </form>
   );
