@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import AllMeals from './components/Allmeals';
 import Nav from './components/Nav';
 import Buscador from './components/Buscador';
+import LetterFilter from './components/LetterFilter';
 
 function App() {
   const [view, setView] = useState('home');
   const [searchTerm, setSearchTerm] = useState('');
-  const [categories, setCategories] = useState('')
+  const [categories, setCategories] = useState('');
+  const [letter, setLetter] = useState('');
 
   return (
     <div className="bg-[#292829] text-white min-h-screen font-sans">
@@ -17,6 +19,10 @@ function App() {
         setCategories={setCategories}
       />
 
+      <LetterFilter
+        setLetter={setLetter}
+      />
+
       <main className="p-6">
         {view === 'home' && (
           <>
@@ -24,6 +30,7 @@ function App() {
             <AllMeals
               searchTerm={searchTerm}
               categories={categories}
+              letter={letter}
             />
           </>
         )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function AllMeals({ searchTerm, categories }) {
+function AllMeals({ searchTerm, categories, letter }) {
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -14,6 +14,9 @@ function AllMeals({ searchTerm, categories }) {
       }
       else if (categories) {
         url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categories}`;
+      }
+      else if (letter) {
+        url = `https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`;
       }
       else {
         const letras = 'abcdefgh'
@@ -42,7 +45,7 @@ function AllMeals({ searchTerm, categories }) {
       setLoading(false);
     }
     getMeals();
-  }, [searchTerm, categories])
+  }, [searchTerm, categories, letter])
 
 
   if (loading) return <p className="text-center">Cargando platos...</p>;
@@ -52,6 +55,7 @@ function AllMeals({ searchTerm, categories }) {
   );
 
   return (
+
     <div className="md:grid-cols-3 grid grid-cols-1 place-items-center pt-5">
       {filteredMeals.length > 0 ? (
         filteredMeals.map((comida) => (
