@@ -9,7 +9,7 @@ export default function Buscador({ searchTerm, setSearchTerm }) {
 
   return (
     <form onSubmit={handleSearch} className="relative w-full max-w-md mx-auto mb-6 pt-5">
-      <div className="flex">
+      <div className="flex p-4 md:p-0">
         <input
           type="search"
           value={searchTerm}
