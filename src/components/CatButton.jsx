@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function CatButton() {
+function CatButton({ setCategories1 }) {
     const [categories, setCategories] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -22,10 +22,13 @@ function CatButton() {
 
             {isOpen && (
                 <ul className="mt-2 border border-gray-300 rounded-lg bg-white max-h-80 overflow-y-auto shadow-lg">
-                    {categories.map((cat) => (
+                    {categories?.map((cat) => (
                         <div
                             key={cat.idCategory}
-                            //onClick={}
+                            onClick={() => {
+                                setCategories1(cat.strCategory)
+                                setIsOpen(false)
+                            }}
                             className="flex gap-3 items-start border rounded-lg p-3 bg-gray-400 hover:bg-gray-300 transition cursor-pointer"
                         >
                             <img

@@ -1,7 +1,7 @@
 import React from 'react';
 import CatButton from './CatButton';
 
-export default function Buscador({ searchTerm, setSearchTerm }) {
+export default function Buscador({ searchTerm, setSearchTerm, setCategories }) {
   const handleSearch = (e) => {
     e.preventDefault();
     console.log('Buscando:', searchTerm);
@@ -19,7 +19,9 @@ export default function Buscador({ searchTerm, setSearchTerm }) {
         />
       </div>
       <div >
-        <CatButton />
+        <CatButton
+          setCategories1={setCategories}
+        />
       </div>
     </form>
   );
