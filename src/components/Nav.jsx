@@ -66,7 +66,7 @@ const Modal = ({ Setstate }) => {
             </li>
             <li>
               <button
-                onClick={() => Setstate('about')}
+                onClick={() => { Setisopenmenu(!isOpenmenu); Setstate('about') }}
                 className="text-white hover:text-blue-500 font-medium cursor-pointer"
               >
                 Acerca de
