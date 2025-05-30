@@ -1,28 +1,49 @@
 import React, { useEffect, useState } from 'react';
 
-function AllMeals({ searchTerm }) {
-  const [meals, setMeals] = useState([]); 
+function AllMeals({ searchTerm, categories }) {
+  const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getMeals() {
-      const letras = 'abcdefg';
-      let comidas = [];
+      setLoading(true)
+      let url = '';
 
-      for (let letra of letras) {
-        const respuesta = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${letra}`);
-        const datos = await respuesta.json();
-        if (datos.meals) {
-          comidas = comidas.concat(datos.meals);
+      if (searchTerm) {
+        url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`;
+      }
+      else if (categories) {
+        url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categories}`;
+      }
+      else {
+        const letras = 'abcdefgh'
+        let comidas = []
+
+        for (let letra of letras) {
+          const respuesta = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${letra}`);
+          const datos = await respuesta.json();
+          if (datos.meals) {
+            comidas = comidas.concat(datos.meals)
+          }
         }
+        setMeals(comidas);
+        setLoading(false);
+        return;
       }
 
-      setMeals(comidas);
+      try {
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
+        setMeals(datos.meals || [])
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+        setMeals([])
+      }
       setLoading(false);
     }
-
     getMeals();
-  }, []);
+  }, [searchTerm, categories])
+
 
   if (loading) return <p className="text-center">Cargando platos...</p>;
 
